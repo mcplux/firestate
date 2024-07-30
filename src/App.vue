@@ -8,7 +8,16 @@
       <v-app-bar color="blue-darken-1">
         <template v-slot:prepend>
           <v-btn :to="{ name: 'home' }">
-            FireState - Home
+            FireState
+          </v-btn>
+        </template>
+
+        <template v-slot:append>
+          <v-btn :to="{ name: 'home' }">
+            Home
+          </v-btn>
+          <v-btn :to="{ name: 'login' }">
+            Login
           </v-btn>
         </template>
       </v-app-bar>
