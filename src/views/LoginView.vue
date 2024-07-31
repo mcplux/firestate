@@ -7,8 +7,6 @@ const { handleSubmit } = useForm({ validationSchema: loginSchema })
 const email = useField('email')
 const password = useField('password')
 
-console.log(email)
-
 const submit = handleSubmit(() => console.log('Sending...'))
 </script>
 
