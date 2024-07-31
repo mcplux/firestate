@@ -21,6 +21,13 @@ const submit = handleSubmit(({ email, password }) => {
       Login
     </v-card-title>
     
+    <v-alert
+      v-if="authStore.hasError"
+      class="mb-5"
+      :title="authStore.errorMessage"
+      type="error"
+    />
+
     <v-form class="p-5">
       <v-text-field 
         type="email"
