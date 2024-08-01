@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useAuthStore } from './stores/auth'
 
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -13,12 +15,23 @@
         </template>
 
         <template v-slot:append>
-          <v-btn :to="{ name: 'home' }">
-            Home
-          </v-btn>
-          <v-btn :to="{ name: 'login' }">
-            Login
-          </v-btn>
+          <div v-if="authStore.isAuth">
+            <v-btn :to="{ name: 'admin-properties' }">
+              Admin
+            </v-btn>
+            <v-btn>
+              Logout
+            </v-btn>
+          </div>
+          
+          <div v-else>
+            <v-btn :to="{ name: 'home' }">
+              Home
+            </v-btn>
+            <v-btn :to="{ name: 'login' }">
+              Login
+            </v-btn>
+          </div>
         </template>
       </v-app-bar>
 

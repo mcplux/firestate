@@ -33,6 +33,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const hasError: ComputedRef<boolean> = computed(() => !!errorMessage.value)
 
+  const isAuth: ComputedRef<boolean> = computed(() => !!authUser.value)
+
   onMounted(() => {
     if(auth) {
       onAuthStateChanged(auth, (user) => {
@@ -47,5 +49,6 @@ export const useAuthStore = defineStore('auth', () => {
     errorMessage,
     login,
     hasError,
+    isAuth,
   }
 })
