@@ -1,7 +1,7 @@
-import { ref, computed, type Ref, type ComputedRef } from 'vue'
+import { ref, computed, type Ref, type ComputedRef, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 import { useFirebaseAuth } from 'vuefire'
-import { signInWithEmailAndPassword, type User } from 'firebase/auth'
+import { onAuthStateChanged, signInWithEmailAndPassword, type User } from 'firebase/auth'
 
 interface ErrorCodes {
   [index: string]: string
@@ -32,6 +32,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const hasError: ComputedRef<boolean> = computed(() => !!errorMessage.value)
+
+  onMounted(() => {
+    if(auth) {
+      onAuthStateChanged(auth, (user) => {
+        if(user) {
+          authUser.value = user
+        }
+      })
+    }
+  })
 
   return {
     errorMessage,
