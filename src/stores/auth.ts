@@ -1,7 +1,7 @@
 import { ref, computed, type Ref, type ComputedRef } from 'vue'
 import { defineStore } from 'pinia'
 import { useFirebaseAuth } from 'vuefire'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, type User } from 'firebase/auth'
 
 interface ErrorCodes {
   [index: string]: string
@@ -9,6 +9,7 @@ interface ErrorCodes {
 
 export const useAuthStore = defineStore('auth', () => {
   const errorMessage: Ref<string> = ref('')
+  const authUser: Ref<User|null> = ref(null)
 
   const auth = useFirebaseAuth()
 
@@ -20,7 +21,9 @@ export const useAuthStore = defineStore('auth', () => {
     if(auth) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          console.log(userCredential)
+          // Authenticate user
+          const user = userCredential.user
+          authUser.value = user
         })
         .catch(err => {
           errorMessage.value = errorCodes[err.code]
