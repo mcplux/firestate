@@ -48,6 +48,23 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  function authenticateUser() {
+    return new Promise((resolve, reject) => {
+      if(auth) {
+        const unsuscribe = onAuthStateChanged(auth, (user) => {
+          unsuscribe()
+          if(user) {
+            resolve(user)
+          } else {
+            reject()
+          }
+        })
+      } else {
+        reject()
+      }
+    })
+  }
+
   const hasError: ComputedRef<boolean> = computed(() => !!errorMessage.value)
 
   const isAuth: ComputedRef<boolean> = computed(() => !!authUser.value)
@@ -66,6 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
     errorMessage,
     login,
     logout,
+    authenticateUser,
     hasError,
     isAuth,
   }

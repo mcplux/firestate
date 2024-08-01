@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,7 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('@/views/admin/AdminLayout.vue'),
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'properties',
@@ -37,6 +39,27 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// Navigation guards
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth: boolean = to.matched.some(url => url.meta.requiresAuth)
+  const authStore = useAuthStore()
+
+  if(requiresAuth) {
+    // Check if user is authenticated
+    try {
+      await authStore.authenticateUser()
+      return next()
+    } catch (error) {
+      console.log(error)
+      return next({ name: 'login' })
+    }
+  }
+  
+  // Route does not requires authentication
+  next()
+
 })
 
 export default router
