@@ -1,5 +1,23 @@
 <script setup lang="ts">
+import { useForm, useField, type FieldContext } from 'vee-validate'
+import { propertySchema, imageSchema } from '@/validation/property.schema'
+
+const { handleSubmit } = useForm({ validationSchema: {...propertySchema, ...imageSchema} })
+
 const items = [0, 1, 2, 3, 4, 5]
+
+const title: FieldContext<string> = useField('title')
+const image: FieldContext<File> = useField('image')
+const price: FieldContext<string> = useField('price')
+const bedrooms: FieldContext<number> = useField('bedrooms')
+const baths: FieldContext<number> = useField('baths')
+const parkings: FieldContext<number> = useField('parkings')
+const description: FieldContext<string> = useField('description')
+const pool: FieldContext<boolean> = useField('pool')
+
+const submit = handleSubmit(values => {
+  console.log(values)
+})
 </script>
 
 <template>
@@ -15,50 +33,74 @@ const items = [0, 1, 2, 3, 4, 5]
     <v-form class="my-5">
       <v-text-field
         label="Title"
+        class="mb-3"
+        v-model="title.value.value"
+        :error-messages="title.errorMessage.value"
       />
 
       <v-file-input 
         accept="image/jpeg"
         label="Photo"
+        class="mb-3"
         prepend-icon="mdi-camera"
+        v-model="image.value.value"
+        :error-messages="image.errorMessage.value"
       />
 
       <v-text-field
         label="Price"
+        class="mb-3"
+        v-model="price.value.value"
+        :error-messages="price.errorMessage.value"
       />
 
-      <v-row>
+      <v-row class="mb-md-0 mb-3">
         <v-col cols="12" md="4">
           <v-select
             label="Bedrooms"
+            class="mb-md-3"
             :items="items"
+            v-model="bedrooms.value.value"
+            :error-messages="bedrooms.errorMessage.value"
           />
         </v-col>
 
         <v-col cols="12" md="4">
           <v-select
             label="Baths"
+            class="mb-md-3"
             :items="items"
+            v-model="baths.value.value"
+            :error-messages="baths.errorMessage.value"
           />
         </v-col>
 
         <v-col cols="12" md="4">
           <v-select
             label="Parking spaces"
+            class="mb-md-3"
             :items="items"
+            v-model="parkings.value.value"
+            :error-messages="parkings.errorMessage.value"
           />
         </v-col>
       </v-row>
 
       <v-textarea
         label="Description"
+        class="mb-3"
+        v-model="description.value.value"
+        :error-messages="description.errorMessage.value"
       />
 
       <v-checkbox
         label="Pool"
+        class="mb-3"
+        v-model="pool.value.value"
+        :error-messages="pool.errorMessage.value"
       />
 
-      <v-btn color="pink-accent-3" block>
+      <v-btn color="pink-accent-3" block @click="submit">
         Add Property
       </v-btn>
     </v-form>
