@@ -28,12 +28,12 @@ const router = createRouter({
         },
         {
           path: 'new',
-          name: 'new-properties',
+          name: 'new-property',
           component: () => import('@/views/admin/NewPropertyView.vue')
         },
         {
           path: 'edit/:id',
-          name: 'edit-properties',
+          name: 'edit-property',
           component: () => import('@/views/admin/EditPropertyView.vue')
         },
       ]
