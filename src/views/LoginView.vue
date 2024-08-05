@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
-import { loginSchema } from '@/validation/loginSchema'
+import { loginSchema } from '@/validation/login.schema'
 import { useAuthStore } from '@/stores/auth'
 
 const { handleSubmit } = useForm({ validationSchema: loginSchema })
