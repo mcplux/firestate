@@ -4,10 +4,13 @@ import { useForm, useField, type FieldContext } from 'vee-validate'
 import { collection, addDoc } from 'firebase/firestore'
 import { useFirestore } from 'vuefire'
 import { propertySchema, imageSchema } from '@/validation/property.schema'
+import useImage from '@/composables/useImage'
 
 const router = useRouter()
 const { handleSubmit } = useForm({ validationSchema: {...propertySchema, ...imageSchema} })
 const db = useFirestore()
+
+const { url, uploadImage, imageUrl } = useImage()
 
 const items = [0, 1, 2, 3, 4, 5]
 
@@ -24,10 +27,11 @@ const submit = handleSubmit(async (values) => {
 
   // Remove image from the property
   const { image, ...property } = values
-
+  
   // Add a new document with a generated id.
   const docRef = await addDoc(collection(db, 'properties'), {
     ...property,
+    image: url.value,
   })
   
   if(docRef.id) {
@@ -61,7 +65,16 @@ const submit = handleSubmit(async (values) => {
         prepend-icon="mdi-camera"
         v-model="image.value.value"
         :error-messages="image.errorMessage.value"
+        @change="uploadImage"
       />
+
+      <div v-if="imageUrl">
+        <p class="font-weight-bold">Property Image:</p>
+        <img
+          class="w-50 rounded"
+          :src="imageUrl"
+        />
+      </div>
 
       <v-text-field
         label="Price"
