@@ -5,12 +5,17 @@ import { collection, addDoc } from 'firebase/firestore'
 import { useFirestore } from 'vuefire'
 import { propertySchema, imageSchema } from '@/validation/property.schema'
 import useImage from '@/composables/useImage'
+import useLocationMap from '@/composables/useLocationMap'
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet"
+
+import "leaflet/dist/leaflet.css"
 
 const router = useRouter()
 const { handleSubmit } = useForm({ validationSchema: {...propertySchema, ...imageSchema} })
 const db = useFirestore()
 
 const { url, uploadImage, imageUrl } = useImage()
+const { zoom, center } = useLocationMap()
 
 const items = [0, 1, 2, 3, 4, 5]
 
@@ -128,6 +133,21 @@ const submit = handleSubmit(async (values) => {
         v-model="pool.value.value"
         :error-messages="pool.errorMessage.value"
       />
+
+      <div class="pb-5">
+        <h2 class="text-center mb-5">Location</h2>
+        <div style="height:600px; width:800px">
+          <LMap v-model:zoom="zoom" :center="center" :use-global-leaflet="false">
+            <LMarker 
+              :lat-lng="center"
+              draggable
+            />
+            <LTileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ></LTileLayer>
+          </LMap>
+        </div>
+      </div>
 
       <v-btn color="pink-accent-3" block @click="submit">
         Add Property
