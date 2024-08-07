@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { useForm, useField, type FieldContext } from 'vee-validate'
+import { collection, addDoc } from 'firebase/firestore'
+import { useFirestore } from 'vuefire'
 import { propertySchema, imageSchema } from '@/validation/property.schema'
 
+const router = useRouter()
 const { handleSubmit } = useForm({ validationSchema: {...propertySchema, ...imageSchema} })
+const db = useFirestore()
 
 const items = [0, 1, 2, 3, 4, 5]
 
@@ -13,10 +18,21 @@ const bedrooms: FieldContext<number> = useField('bedrooms')
 const baths: FieldContext<number> = useField('baths')
 const parkings: FieldContext<number> = useField('parkings')
 const description: FieldContext<string> = useField('description')
-const pool: FieldContext<boolean> = useField('pool')
+const pool: FieldContext<boolean> = useField('pool', undefined, { initialValue: false })
 
-const submit = handleSubmit(values => {
-  console.log(values)
+const submit = handleSubmit(async (values) => {
+
+  // Remove image from the property
+  const { image, ...property } = values
+
+  // Add a new document with a generated id.
+  const docRef = await addDoc(collection(db, 'properties'), {
+    ...property,
+  })
+  
+  if(docRef.id) {
+    router.push({ name: 'admin-properties' })
+  }
 })
 </script>
 
