@@ -15,7 +15,7 @@ const { handleSubmit } = useForm({ validationSchema: {...propertySchema, ...imag
 const db = useFirestore()
 
 const { url, uploadImage, imageUrl } = useImage()
-const { zoom, center } = useLocationMap()
+const { zoom, center, pinOnMove } = useLocationMap()
 
 const items = [0, 1, 2, 3, 4, 5]
 
@@ -37,6 +37,7 @@ const submit = handleSubmit(async (values) => {
   const docRef = await addDoc(collection(db, 'properties'), {
     ...property,
     image: url.value,
+    location: center.value,
   })
   
   if(docRef.id) {
@@ -141,6 +142,7 @@ const submit = handleSubmit(async (values) => {
             <LMarker 
               :lat-lng="center"
               draggable
+              @moveend="pinOnMove"
             />
             <LTileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
