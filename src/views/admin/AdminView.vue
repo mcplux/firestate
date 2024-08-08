@@ -25,7 +25,7 @@ const { propertiesCollection } = useProperties()
         <v-list-item-subtitle>{{ formatCurrency(property.price) }}</v-list-item-subtitle>
 
         <template v-slot:append>
-          <v-btn color="info" class="mr-2" flat>Edit</v-btn>
+          <v-btn color="info" class="mr-2" :to="{ name: 'edit-property', params: { id: property.id } }" flat>Edit</v-btn>
           <v-btn color="red-darken-3" flat>Delete</v-btn>
         </template>
       </v-list-item>
