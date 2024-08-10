@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { doc } from 'firebase/firestore'
+import { useRoute, useRouter } from 'vue-router'
+import { doc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore, type _RefFirestore } from 'vuefire'
 import type { Property } from '@/interfaces/property.interface'
 import { useField, useForm, type FieldContext } from 'vee-validate'
@@ -14,6 +14,7 @@ import "leaflet/dist/leaflet.css"
 
 const { handleSubmit } = useForm({ validationSchema: propertySchema })
 const route = useRoute()
+const router = useRouter()
 const db = useFirestore()
 
 const { url, uploadImage, imageUrl } = useImage()
@@ -48,7 +49,26 @@ watch(property, (property) => {
   center.value = property.location
 })
 
-const submit = handleSubmit((values) => {
+const submit = handleSubmit(async (values) => {
+  const {image, ...property} = values
+  if(url.value) {
+    const data = {
+      ...property,
+      location: center.value,
+      image: url.value,
+    }
+
+    await updateDoc(docRef, data)
+  } else {
+    const data = {
+      ...property,
+      location: center.value,
+    }
+
+    await updateDoc(docRef, data)
+  }
+
+  router.push({name: 'admin-properties'})
 
 })
 </script>
@@ -81,11 +101,19 @@ const submit = handleSubmit((values) => {
         @change="uploadImage"
       />
 
-      <div v-if="imageUrl">
+      <div>
         <p class="font-weight-bold">Property Image:</p>
+
         <img
+          v-if="imageUrl"
           class="w-50 rounded"
           :src="imageUrl"
+        />
+
+        <img
+          v-else
+          class="w-50 rounded"
+          :src="property?.image"
         />
       </div>
 
