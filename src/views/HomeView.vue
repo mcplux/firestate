@@ -2,7 +2,7 @@
 import useProperties from '@/composables/useProperties'
 import Property from '@/components/Property.vue'
 
-const { propertiesCollection } = useProperties()
+const { pool, filteredProperties, } = useProperties()
 </script>
 
 <template>
@@ -11,9 +11,11 @@ const { propertiesCollection } = useProperties()
       Properties
     </v-card-title>
 
+    <v-checkbox label="Pool" v-model="pool" />
+
     <v-row>
       <Property 
-        v-for="property in propertiesCollection"
+        v-for="property in filteredProperties"
         :key="property.id"
         :property="property"
       />
