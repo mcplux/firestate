@@ -75,7 +75,7 @@ const submit = handleSubmit(async (values) => {
 
 <template>
   <v-card max-width="800" flat class="mx-auto">
-    <v-card-title class="text-h3" tag="h2">
+    <v-card-title class="text-h3 no-truncate" tag="h2">
       Edit Property
     </v-card-title>
 
