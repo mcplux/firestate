@@ -17,7 +17,15 @@ defineProps<Props>()
       <v-card-text class="text-truncate">{{ property.description }}</v-card-text>
       <v-card-text class="text-truncate text-h5 font-weight-bold">{{ formatCurrency(property.price) }}</v-card-text>
       <template v-slot:actions>
-        <v-btn block color="info" variant="tonal" prepend-icon="mdi-information-outline">More info</v-btn>
+        <v-btn 
+          block 
+          color="info" 
+          variant="tonal" 
+          prepend-icon="mdi-information-outline" 
+          :to="{ name: 'property', params: { id: property.id } }"
+        >
+          More info
+        </v-btn>
       </template>
     </v-card>
   </v-col>
