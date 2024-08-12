@@ -10,36 +10,36 @@ const id = route.params.id as string
 
 const db = useFirestore()
 const docRef = doc(db, 'properties', id)
-const proprety = useDocument<Property>(docRef)
+const property = useDocument<Property>(docRef)
 </script>
 
 <template>
   <v-card flat>
     <v-card-title class="mt-5 text-h3 text-center font-weight-bold">
-      {{ proprety?.title }}
+      {{ property?.title }}
     </v-card-title>
 
-    <v-img :src="proprety?.image" height="550" cover />
+    <v-img :src="property?.image" height="550" cover />
 
     <div class="bg-blue-grey-lighten-5 d-flex flex-column flex-md-row">
       <v-card-text>
-        Price: <span class="font-weight-bold">{{ formatCurrency(proprety?.price ?? '') }}</span>
+        Price: <span class="font-weight-bold">{{ formatCurrency(property?.price ?? '') }}</span>
       </v-card-text>
       <v-card-text>
-        Baths: <span class="font-weight-bold">{{ proprety?.baths }}</span>
+        Baths: <span class="font-weight-bold">{{ property?.baths }}</span>
       </v-card-text>
       <v-card-text>
-        Parking Spaces: <span class="font-weight-bold">{{ proprety?.parkings }}</span>
+        Parking Spaces: <span class="font-weight-bold">{{ property?.parkings }}</span>
       </v-card-text>
       <v-card-text>
-        Bedrooms: <span class="font-weight-bold">{{ proprety?.bedrooms }}</span>
+        Bedrooms: <span class="font-weight-bold">{{ property?.bedrooms }}</span>
       </v-card-text>
     </div>
 
     <v-row class="mt-5">
       <v-col cols="12" md="8">
         <div class="text-pre-wrap">
-          {{ proprety?.description }}
+          {{ property?.description }}
         </div>
       </v-col>
       <v-col cols="12" md="4">
