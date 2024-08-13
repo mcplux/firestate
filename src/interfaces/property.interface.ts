@@ -8,5 +8,5 @@ export interface Property {
   parkings: number,
   description: string,
   pool: boolean,
-  location: number[],
+  location: [number, number],
 }
