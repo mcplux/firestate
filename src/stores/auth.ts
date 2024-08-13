@@ -1,4 +1,4 @@
-import { ref, computed, type Ref, type ComputedRef, onMounted } from 'vue'
+import { ref, computed, type ComputedRef, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { useFirebaseAuth } from 'vuefire'
@@ -11,8 +11,8 @@ interface ErrorCodes {
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
 
-  const errorMessage: Ref<string> = ref('')
-  const authUser: Ref<User|null> = ref(null)
+  const errorMessage = ref<string>('')
+  const authUser = ref<User | null>(null)
 
   const auth = useFirebaseAuth()
 
@@ -65,9 +65,9 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  const hasError: ComputedRef<boolean> = computed(() => !!errorMessage.value)
+  const hasError = computed<boolean>(() => !!errorMessage.value)
 
-  const isAuth: ComputedRef<boolean> = computed(() => !!authUser.value)
+  const isAuth = computed<boolean>(() => !!authUser.value)
 
   onMounted(() => {
     if(auth) {
